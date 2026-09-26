@@ -60,13 +60,13 @@
       margin: 0 auto;
       padding: var(--pad-y) var(--pad-x);
       display: grid;
-      grid-template-rows: minmax(0, 1fr) auto;
-      gap: clamp(18px, 3vh, 34px);
+      grid-template-rows: auto auto;
+      align-content: center;
+      gap: clamp(28px, 5vh, 56px);
       overflow: hidden;
     }
 
     .hero {
-      align-self: center;
       justify-self: center;
       max-width: 980px;
       padding-top: 0;
@@ -103,7 +103,6 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: clamp(10px, 1.15vw, 16px);
-      align-self: start;
       min-height: 0;
     }
 
