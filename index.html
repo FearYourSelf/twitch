@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#09090a" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="A better tip jar: support causes that matter instead." />
+  <title>Support Something That Matters</title>
+  <style>
+    :root {
+      --bg: #09090a;
+      --surface: #101013;
+      --surface-hover: #141418;
+      --text: #f4f4f7;
+      --muted: #98989f;
+      --dim: #6e6e75;
+      --line: rgba(255,255,255,.105);
+      --line-strong: rgba(255,255,255,.16);
+      --radius: 22px;
+      --pad: clamp(22px, 6.5vw, 96px);
+      --content: 1248px;
+      --ease: cubic-bezier(.22,.61,.36,1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(900px 540px at 73% -4%, rgba(255,255,255,.035), transparent 68%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    .page {
+      width: min(100%, calc(var(--content) + var(--pad) * 2));
+      margin: 0 auto;
+      padding: 0 var(--pad) 56px;
+    }
+
+    .topbar {
+      height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .topbar .note {
+      font-weight: 500;
+      letter-spacing: .01em;
+      text-transform: none;
+    }
+
+    .hero {
+      padding: clamp(88px, 11vw, 150px) 0 clamp(74px, 8vw, 108px);
+      max-width: 940px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: .105em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: .78;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 890px;
+      font-size: clamp(50px, 6.1vw, 88px);
+      line-height: .96;
+      letter-spacing: -.055em;
+      font-weight: 620;
+      text-wrap: balance;
+    }
+
+    .intro {
+      max-width: 800px;
+      margin: 34px 0 0;
+      color: var(--muted);
+      font-size: clamp(18px, 1.55vw, 22px);
+      line-height: 1.5;
+      letter-spacing: -.012em;
+      text-wrap: pretty;
+    }
+
+    .intro strong { color: var(--text); font-weight: 560; }
+
+    .causes {
+      border-top: 1px solid var(--line);
+    }
+
+    .cause {
+      position: relative;
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      padding: 31px 0;
+      border-bottom: 1px solid var(--line);
+      isolation: isolate;
+      transition: border-color .35s var(--ease), transform .35s var(--ease);
+    }
+
+    .cause::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 5px -18px;
+      border-radius: 18px;
+      background: var(--surface);
+      opacity: 0;
+      transform: scale(.995);
+      transition: opacity .35s var(--ease), transform .35s var(--ease);
+    }
+
+    .cause:hover::before,
+    .cause:focus-within::before {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .cause:hover { border-color: var(--line-strong); }
+
+    .index {
+      align-self: start;
+      padding-top: 6px;
+      color: var(--dim);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+    }
+
+    .cause-copy h2 {
+      margin: 0;
+      font-size: clamp(22px, 2vw, 28px);
+      font-weight: 590;
+      letter-spacing: -.025em;
+    }
+
+    .cause-copy p {
+      margin: 8px 0 0;
+      max-width: 650px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      letter-spacing: -.008em;
+    }
+
+    .visit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 92px;
+      height: 42px;
+      padding: 0 17px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px;
+      background: var(--text);
+      color: #0b0b0d;
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: -.01em;
+      transition: transform .3s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease);
+    }
+
+    .visit::after {
+      content: "↗";
+      font-size: 15px;
+      transform: translateY(-.5px);
+      transition: transform .3s var(--ease);
+    }
+
+    .cause:hover .visit,
+    .visit:focus-visible {
+      transform: translateY(-1px);
+      background: #fff;
+      box-shadow: 0 8px 30px rgba(0,0,0,.26);
+    }
+
+    .cause:hover .visit::after { transform: translate(2px,-2px); }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 40px 0 0;
+      color: var(--dim);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer strong { color: var(--text); font-weight: 560; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .cursor-light {
+      position: fixed;
+      width: 460px;
+      height: 460px;
+      left: 0;
+      top: 0;
+      z-index: -1;
+      pointer-events: none;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.026), transparent 67%);
+      transform: translate(-50%,-50%);
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+
+    @media (hover:hover) and (pointer:fine) {
+      body:hover .cursor-light { opacity: 1; }
+    }
+
+    @media (max-width: 720px) {
+      .page { padding-bottom: 34px; }
+      .topbar { height: 72px; }
+      .topbar .note { display: none; }
+      .hero { padding-top: 76px; padding-bottom: 64px; }
+      .eyebrow { margin-bottom: 20px; font-size: 11px; }
+      h1 { font-size: clamp(46px, 14vw, 62px); line-height: .99; letter-spacing: -.052em; }
+      .intro { margin-top: 24px; font-size: 17px; line-height: 1.5; }
+      .cause {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "index visit"
+          "copy copy";
+        gap: 15px 18px;
+        padding: 24px 0 27px;
+      }
+      .index { grid-area: index; padding: 5px 0 0; }
+      .cause-copy { grid-area: copy; }
+      .visit { grid-area: visit; min-width: 82px; height: 38px; padding: 0 14px; font-size: 13px; }
+      .cause-copy h2 { font-size: 22px; }
+      .cause-copy p { margin-top: 7px; font-size: 14px; }
+      .cause::before { inset: 5px -10px; border-radius: 15px; }
+      .footer { flex-direction: column; gap: 6px; padding-top: 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+      .reveal { opacity: 1; transform: none; }
+      .cursor-light { display: none; }
+    }
+
+    :focus-visible {
+      outline: 2px solid rgba(255,255,255,.82);
+      outline-offset: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor-light" aria-hidden="true"></div>
+
+  <main class="page">
+    <header class="topbar reveal">
+      <span>Igor / Stream Support</span>
+      <span class="note">No tips. Better targets.</span>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow reveal">A better tip jar</div>
+      <h1 class="reveal">You’ve already<br />given me enough.</h1>
+      <p class="intro reveal">
+        If you’re here watching, chatting, laughing at dumb shit with me, or just lurking in peace,
+        <strong>that’s already more support than I could ask for.</strong>
+        If you still want to give something, send it somewhere it can do more good.
+      </p>
+    </section>
+
+    <section class="causes" aria-label="Causes I care about">
+      <article class="cause reveal">
+        <div class="index">01</div>
+        <div class="cause-copy">
+          <h2>Best Friends Animal Society</h2>
+          <p>Helping pets leave shelters alive and working toward a future where homeless animals have somewhere to go.</p>
+        </div>
+        <a class="visit" href="https://bestfriends.org/" target="_blank" rel="noopener noreferrer" aria-label="Visit Best Friends Animal Society">Visit</a>
+      </article>
+
+      <article class="cause reveal">
+        <div class="index">02</div>
+        <div class="cause-copy">
+          <h2>American Foundation for Suicide Prevention</h2>
+          <p>Supporting suicide-prevention research, education, advocacy, and people affected by suicide.</p>
+        </div>
+        <a class="visit" href="https://afsp.org/" target="_blank" rel="noopener noreferrer" aria-label="Visit American Foundation for Suicide Prevention">Visit</a>
+      </article>
+
+      <article class="cause reveal">
+        <div class="index">03</div>
+        <div class="cause-copy">
+          <h2>Brain Trauma Foundation</h2>
+          <p>Advancing evidence-based guidance and research aimed at improving outcomes after traumatic brain injury.</p>
+        </div>
+        <a class="visit" href="https://braintrauma.org/donate" target="_blank" rel="noopener noreferrer" aria-label="Donate to Brain Trauma Foundation">Visit</a>
+      </article>
+    </section>
+
+    <footer class="footer reveal">
+      <span>No guilt. No leaderboard. No names on a wall.</span>
+      <strong>Just help if you want to.</strong>
+    </footer>
+  </main>
+
+  <script>
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!reduced) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -24px' });
+
+      document.querySelectorAll('.reveal').forEach((el, i) => {
+        el.style.transitionDelay = `${Math.min(i * 45, 240)}ms`;
+        observer.observe(el);
+      });
+
+      const glow = document.querySelector('.cursor-light');
+      window.addEventListener('pointermove', (e) => {
+        glow.style.left = `${e.clientX}px`;
+        glow.style.top = `${e.clientY}px`;
+      }, { passive: true });
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    }
+  </script>
+</body>
+</html>
