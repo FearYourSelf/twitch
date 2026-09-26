@@ -33,7 +33,7 @@
       height: 100%;
       margin: 0;
       background: var(--bg);
-      overflow: hidden;
+      overflow-x: clip;
     }
 
     body {
@@ -55,15 +55,14 @@
 
     .page {
       width: min(100%, calc(var(--content) + var(--pad-x) * 2));
-      height: 100vh;
-      height: 100svh;
+      min-height: 100vh;
+      min-height: 100svh;
       margin: 0 auto;
       padding: var(--pad-y) var(--pad-x);
       display: grid;
       grid-template-rows: auto auto;
       align-content: center;
       gap: clamp(28px, 5vh, 56px);
-      overflow: hidden;
     }
 
     .hero {
@@ -264,7 +263,6 @@
 
     @media (max-width: 820px) {
       .page {
-        grid-template-rows: auto minmax(0, 1fr);
         gap: 14px;
         padding-top: clamp(18px, 3.5vh, 30px);
         padding-bottom: clamp(14px, 2.5vh, 22px);
